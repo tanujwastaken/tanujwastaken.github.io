@@ -17,6 +17,12 @@ let score = 0;
 
 // 🎮 INPUT (replaces KeyListener)
 document.addEventListener("keydown", e => {
+  // Restart game
+  if (!running && e.key === "Enter") {
+    resetGame();
+    return;
+  }
+
   switch (e.key) {
     case "ArrowUp":
       if (velocity.y === 0) velocity = { x: 0, y: -UNIT_SIZE };
@@ -99,9 +105,12 @@ function draw() {
   ctx.fillText("Score: " + score, 10, 20);
 
   if (!running) {
-    ctx.fillStyle = "white";
-    ctx.font = "40px Arial";
-    ctx.fillText("Game Over", 180, 300);
+  ctx.fillStyle = "white";
+  ctx.font = "40px Arial";
+  ctx.fillText("Game Over", 180, 260);
+
+  ctx.font = "20px Arial";
+  ctx.fillText("Press ENTER to restart", 180, 300);
   }
 }
 
@@ -113,3 +122,11 @@ function gameLoop() {
 }
 
 gameLoop();
+
+function resetGame() {
+  snake = [{ x: 10 * UNIT_SIZE, y: 10 * UNIT_SIZE }];
+  velocity = { x: UNIT_SIZE, y: 0 };
+  food = spawnFood();
+  running = true;
+  score = 0;
+}
